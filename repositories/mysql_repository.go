@@ -53,12 +53,12 @@ func (repository *MySQLRepository) SignIn(user *models.User) error {
 	return nil
 }
 
-func (repository *MySQLRepository) GetAllUsers() *[]models.User {
+func (repository *MySQLRepository) GetAllUsers() (*[]models.User, error) {
 
 	var users []models.User
 	//select all records from users
-	repository.db.Find(&users)
-	return &users
+	err := repository.db.Find(&users).Error
+	return &users, err
 }
 
 func (repository *MySQLRepository) AddTweet(tweet *models.Tweet) error {
@@ -78,18 +78,18 @@ func (repository *MySQLRepository) AddTweet(tweet *models.Tweet) error {
 	return nil
 }
 
-func (repository *MySQLRepository) GetTweetsOfUser(username string) *[]models.Tweet {
+func (repository *MySQLRepository) GetTweetsOfUser(username string) (*[]models.Tweet, error) {
 
 	var tweets []models.Tweet
-	repository.db.Where("BINARY user_name = ?", username).Find(&tweets)
-	return &tweets
+	err := repository.db.Where("BINARY user_name = ?", username).Find(&tweets).Error
+	return &tweets, err
 }
 
-func (repository *MySQLRepository) GetFolloweesOfUser(username string) *[]models.Follows {
+func (repository *MySQLRepository) GetFolloweesOfUser(username string) (*[]models.Follows, error) {
 
 	var followees []models.Follows
-	repository.db.Where("BINARY source_user = ?", username).Find(&followees)
-	return &followees
+	err := repository.db.Where("BINARY source_user = ?", username).Find(&followees).Error
+	return &followees, err
 }
 
 func (repository *MySQLRepository) AddFollowee(follow *models.Follows) error {
@@ -112,13 +112,16 @@ func (repository *MySQLRepository) AddFollowee(follow *models.Follows) error {
 	return nil
 }
 
-func (repository *MySQLRepository) DeleteTweet(tweetid int) {
+func (repository *MySQLRepository) DeleteTweet(tweetid int) error {
 	var tweet models.Tweet
-	repository.db.Delete(&tweet, tweetid)
+	err := repository.db.Delete(&tweet, tweetid).Error
+
+	return err
 }
-func (repository *MySQLRepository) DeleteFollowee(username string, followeename string) {
+func (repository *MySQLRepository) DeleteFollowee(username string, followeename string) error {
 	var followee models.Follows
-	repository.db.Delete(&followee, "BINARY source_user = ? and target_user = ?", username, followeename)
+	err := repository.db.Delete(&followee, "BINARY source_user = ? and target_user = ?", username, followeename).Error
+	return err
 
 }
 

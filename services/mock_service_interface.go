@@ -91,9 +91,11 @@ func (mr *MockServiceInterfaceMockRecorder) CheckFollowing(arg0, arg1 interface{
 }
 
 // DeleteFollowee mocks base method.
-func (m *MockServiceInterface) DeleteFollowee(arg0, arg1 string) {
+func (m *MockServiceInterface) DeleteFollowee(arg0, arg1 string) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "DeleteFollowee", arg0, arg1)
+	ret := m.ctrl.Call(m, "DeleteFollowee", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // DeleteFollowee indicates an expected call of DeleteFollowee.
@@ -103,9 +105,11 @@ func (mr *MockServiceInterfaceMockRecorder) DeleteFollowee(arg0, arg1 interface{
 }
 
 // DeleteTweet mocks base method.
-func (m *MockServiceInterface) DeleteTweet(arg0 int) {
+func (m *MockServiceInterface) DeleteTweet(arg0 int) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "DeleteTweet", arg0)
+	ret := m.ctrl.Call(m, "DeleteTweet", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // DeleteTweet indicates an expected call of DeleteTweet.
@@ -115,11 +119,12 @@ func (mr *MockServiceInterfaceMockRecorder) DeleteTweet(arg0 interface{}) *gomoc
 }
 
 // GetAllUsers mocks base method.
-func (m *MockServiceInterface) GetAllUsers() *[]models.User {
+func (m *MockServiceInterface) GetAllUsers() (*[]models.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAllUsers")
 	ret0, _ := ret[0].(*[]models.User)
-	return ret0
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetAllUsers indicates an expected call of GetAllUsers.
@@ -129,11 +134,12 @@ func (mr *MockServiceInterfaceMockRecorder) GetAllUsers() *gomock.Call {
 }
 
 // GetFolloweesOfUser mocks base method.
-func (m *MockServiceInterface) GetFolloweesOfUser(arg0 string) *[]models.Follows {
+func (m *MockServiceInterface) GetFolloweesOfUser(arg0 string) (*[]models.Follows, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetFolloweesOfUser", arg0)
 	ret0, _ := ret[0].(*[]models.Follows)
-	return ret0
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetFolloweesOfUser indicates an expected call of GetFolloweesOfUser.
@@ -143,11 +149,12 @@ func (mr *MockServiceInterfaceMockRecorder) GetFolloweesOfUser(arg0 interface{})
 }
 
 // GetTweetsOfUser mocks base method.
-func (m *MockServiceInterface) GetTweetsOfUser(arg0 string) *[]models.Tweet {
+func (m *MockServiceInterface) GetTweetsOfUser(arg0 string) (*[]models.Tweet, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetTweetsOfUser", arg0)
 	ret0, _ := ret[0].(*[]models.Tweet)
-	return ret0
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetTweetsOfUser indicates an expected call of GetTweetsOfUser.

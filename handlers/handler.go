@@ -58,7 +58,11 @@ func (h *Handler) SignIn(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	users := h.service.GetAllUsers()
+	users, err := h.service.GetAllUsers()
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	json.NewEncoder(w).Encode(users)
 
 }
@@ -82,7 +86,11 @@ func (h *Handler) AddTweet(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) GetTweetsOfUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
-	tweets := h.service.GetTweetsOfUser(params["username"])
+	tweets, err := h.service.GetTweetsOfUser(params["username"])
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	json.NewEncoder(w).Encode(tweets)
 
 }
@@ -90,7 +98,11 @@ func (h *Handler) GetTweetsOfUser(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) GetFolloweesOfUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
-	followees := h.service.GetFolloweesOfUser(params["username"])
+	followees, err := h.service.GetFolloweesOfUser(params["username"])
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	json.NewEncoder(w).Encode(followees)
 
 }
@@ -116,7 +128,12 @@ func (h *Handler) DeleteTweet(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	h.service.DeleteTweet(val)
+
+	err = h.service.DeleteTweet(val)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	json.NewEncoder(w).Encode("deleted tweet")
 
 }
@@ -125,7 +142,11 @@ func (h *Handler) DeleteFollowee(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
 
-	h.service.DeleteFollowee(params["username"], params["followeename"])
+	err := h.service.DeleteFollowee(params["username"], params["followeename"])
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	json.NewEncoder(w).Encode("deleted followee")
 
 }
@@ -140,6 +161,6 @@ func (h *Handler) CheckFollowing(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusFound)
 		return
 	}
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusNotFound)
 
 }
