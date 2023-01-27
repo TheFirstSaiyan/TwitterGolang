@@ -52,7 +52,7 @@ func setUpRoutes(handler *handlers.Handler) {
 }
 
 func main() {
-	const dsn = "root:FBenGax11@@tcp(127.0.0.1:3306)/demodb?parseTime=true"
+	const dsn = "root:@tcp(127.0.0.1:3306)/demodb?parseTime=true"
 
 	repository := repositories.NewMySqlRepository(dsn)
 	service := services.NewUserService(repository)
